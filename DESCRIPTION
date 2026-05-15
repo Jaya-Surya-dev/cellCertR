@@ -1,4 +1,4 @@
-Package: cellCertR
+Package: scCertify
 Title: Explainable Confidence Scoring for Single-Cell Annotations
 Version: 0.0.0.9000
 Authors@R: 
@@ -27,5 +27,5 @@ Suggests:
     celldex,
     SingleCellExperiment,
     ggplot2
-URL: https://github.com/Jaya-Surya-dev/cellCertR
-BugReports: https://github.com/Jaya-Surya-dev/cellCertR/issues
+URL: https://github.com/Jaya-Surya-dev/scCertify
+BugReports: https://github.com/Jaya-Surya-dev/scCertify/issues
