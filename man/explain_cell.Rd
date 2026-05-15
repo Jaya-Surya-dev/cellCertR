@@ -9,9 +9,16 @@ explain_cell(object, cell_id)
 \arguments{
 \item{object}{Seurat object}
 
-\item{cell_id}{cell barcode}
+\item{cell_id}{Cell barcode}
+}
+\value{
+Character vector
 }
 \description{
 Provides interpretable explanation
 for confidence scores.
+}
+\examples{
+NULL
+
 }

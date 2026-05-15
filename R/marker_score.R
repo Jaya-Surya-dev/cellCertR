@@ -1,22 +1,24 @@
 #' Marker Consistency Score
 #'
 #' Uses UCell enrichment scoring
-#' for robust marker evaluation.
+#' for marker evaluation.
 #'
 #' @param object Seurat object
-#' @param markers Named marker gene list
+#' @param markers Named marker list
 #' @param label_column Metadata label column
 #'
 #' @return Numeric vector
 #'
+#' @examples
+#' NULL
+#'
 #' @export
 
 marker_score <- function(
-    object,
-    markers,
-    label_column = "predicted_label"
+  object,
+  markers,
+  label_column = "predicted_label"
 ) {
-
   labels <- object@meta.data[
     ,
     label_column
@@ -26,18 +28,20 @@ marker_score <- function(
     length(labels)
   )
 
-  for(label in unique(labels)) {
-
+  for (
+    label in unique(labels)
+  ) {
     matched_label <- match_labels(
       label,
       names(markers)
     )
 
-    if(is.na(matched_label)) {
-
+    if (
+      is.na(matched_label)
+    ) {
       warning(
-        paste(
-          "No ontology match for:",
+        sprintf(
+          "No ontology match for: %s",
           label
         )
       )
@@ -51,11 +55,12 @@ marker_score <- function(
       genes %in% rownames(object)
     ]
 
-    if(length(genes) == 0) {
-
+    if (
+      length(genes) == 0
+    ) {
       warning(
-        paste(
-          "No marker genes found for:",
+        sprintf(
+          "No marker genes found for: %s",
           matched_label
         )
       )

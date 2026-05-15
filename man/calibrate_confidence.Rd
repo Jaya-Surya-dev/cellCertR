@@ -7,12 +7,24 @@
 calibrate_confidence(scores)
 }
 \arguments{
-\item{scores}{Numeric confidence scores}
+\item{scores}{Numeric vector}
 }
 \value{
-Numeric calibrated scores
+Numeric vector
 }
 \description{
 Converts raw confidence scores
-into percentile-calibrated scores.
+into calibrated percentile scores.
+}
+\examples{
+scores <- c(
+  0.2,
+  0.5,
+  0.8
+)
+
+calibrate_confidence(
+  scores
+)
+
 }

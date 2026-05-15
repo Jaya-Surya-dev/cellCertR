@@ -1,0 +1,216 @@
+---
+title: "scCertify Workflow"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{scCertify Workflow}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+\`\`\`{r setup, include=FALSE} knitr::opts_chunk\$set( collapse = TRUE, comment = "#\>" )
+
+Introduction
+
+scCertify is an R package for explainable confidence scoring of single-cell RNA-seq annotations.
+
+The framework integrates:
+
+1.Marker enrichment scoring
+
+2.Neighborhood agreement
+
+3.Entropy uncertainty
+
+4.Doublet-aware confidence scoring
+
+5.Confidence calibration
+
+6.Explainable confidence attribution
+
+Load Libraries
+
+```{r load-libraries}
+library(scCertify)
+
+library(Seurat)
+
+library(SingleR)
+
+library(celldex)
+
+library(UCell)
+
+library(scDblFinder)
+
+library(SingleCellExperiment)
+```
+
+Load Example Dataset
+
+```{r load-data}
+data("pbmc_small")
+
+pbmc_small
+```
+
+Preprocessing
+
+```{r pre-processing}
+pbmc_small <- NormalizeData(
+  pbmc_small
+)
+
+pbmc_small <- FindVariableFeatures(
+  pbmc_small
+)
+
+pbmc_small <- ScaleData(
+  pbmc_small
+)
+
+pbmc_small <- RunPCA(
+  pbmc_small
+)
+
+pbmc_small <- RunUMAP(
+  pbmc_small,
+  dims = 1:10
+)
+```
+
+Convert to SingleCellExperiment
+
+```{r convert-to-sce}
+sce <- as.SingleCellExperiment(
+  pbmc_small
+)
+```
+
+SingleR Annotation
+
+```{r SingleR-Annotation}
+ref <- HumanPrimaryCellAtlasData()
+
+pred <- SingleR(
+  test = sce,
+  ref = ref,
+  labels = ref$label.main
+)
+
+pbmc_small$predicted_label <-
+  pred$labels
+```
+
+Doublet Detection
+
+```{r Doublet-Detection}
+sce <- scDblFinder(
+  sce
+)
+
+pbmc_small$doublet_score <-
+  colData(sce)$scDblFinder.score
+
+pbmc_small$doublet_class <-
+  colData(sce)$scDblFinder.class
+```
+
+Marker Database
+
+```{r Marker-Database}
+markers <- list(
+  "B_cell" = c(
+    "MS4A1",
+    "CD79A"
+  ),
+  "T_cells" = c(
+    "CD3D",
+    "IL7R"
+  ),
+  "Monocyte" = c(
+    "LYZ",
+    "S100A8"
+  ),
+  "NK_cell" = c(
+    "NKG7",
+    "GNLY"
+  ),
+  "DC" = c(
+    "FCER1A",
+    "CST3"
+  )
+)
+```
+
+Entropy Calculation
+
+```{r Calculate-Entropy}
+pbmc_small$entropy_score <-
+  entropy_score(
+    pred$scores
+  )
+
+pbmc_small$entropy_norm <- (
+  pbmc_small$entropy_score -
+
+    min(pbmc_small$entropy_score)
+) / (
+  max(pbmc_small$entropy_score) -
+
+    min(pbmc_small$entropy_score)
+)
+```
+
+Run scCertify
+
+```{r Run-package}
+pbmc_small <- cell_certify(
+  pbmc_small,
+  markers
+)
+```
+
+Confidence Classes
+
+```{r Confidence-classes}
+table(
+  pbmc_small$confidence_class
+)
+```
+
+Confidence Score Visualization
+
+```{r CS-visualization}
+FeaturePlot(
+  pbmc_small,
+  features = "confidence_score"
+)
+```
+
+Confidence Class Visualization
+
+```{r CC-Visualization}
+DimPlot(
+  pbmc_small,
+  group.by = "confidence_class"
+)
+```
+
+Explain Confidence Attribution
+
+```{r ECA}
+cell_id <- colnames(
+  pbmc_small
+)[1]
+
+explain_confidence(
+  pbmc_small,
+  cell_id
+)
+```
+
+Session Information
+
+```{r Session-info}
+sessionInfo()
+```

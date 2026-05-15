@@ -9,13 +9,17 @@ cell_certify(object, markers, label_column = "predicted_label")
 \arguments{
 \item{object}{Seurat object}
 
-\item{markers}{Named marker gene list}
+\item{markers}{Named marker list}
 
-\item{label_column}{Metadata column containing labels}
+\item{label_column}{Metadata label column}
 }
 \value{
-Seurat object with confidence scores
+Seurat object
 }
 \description{
 Main confidence scoring framework.
+}
+\examples{
+NULL
+
 }

@@ -3,18 +3,60 @@
 #' Main confidence scoring framework.
 #'
 #' @param object Seurat object
-#' @param markers Named marker gene list
-#' @param label_column Metadata column containing labels
+#' @param markers Named marker list
+#' @param label_column Metadata label column
 #'
-#' @return Seurat object with confidence scores
+#' @return Seurat object
+#'
+#' @examples
+#' NULL
 #'
 #' @export
 
 cell_certify <- function(
-    object,
-    markers,
-    label_column = "predicted_label"
+  object,
+  markers,
+  label_column = "predicted_label"
 ) {
+  if (
+    !label_column %in%
+      colnames(
+        object@meta.data
+      )
+  ) {
+    stop(
+      sprintf(
+        "%s not found in metadata",
+        label_column
+      )
+    )
+  }
+
+  if (
+    !"entropy_norm" %in%
+      colnames(
+        object@meta.data
+      )
+  ) {
+    warning(
+      "entropy_norm not found. Using zeros."
+    )
+
+    object$entropy_norm <- 0
+  }
+
+  if (
+    !"doublet_score" %in%
+      colnames(
+        object@meta.data
+      )
+  ) {
+    warning(
+      "doublet_score not found. Using zeros."
+    )
+
+    object$doublet_score <- 0
+  }
 
   object$marker_score <-
     marker_score(
@@ -40,10 +82,10 @@ cell_certify <- function(
     0.35 * scale(
       object$neighbor_score
     ) +
-    0.2 * scale(
+    0.20 * scale(
       entropy_component
     ) -
-    0.1 * scale(
+    0.10 * scale(
       object$doublet_score
     )
 
@@ -53,10 +95,21 @@ cell_certify <- function(
 
   confidence <- (
     confidence -
-      min(confidence)
+
+      min(
+        confidence,
+        na.rm = TRUE
+      )
   ) / (
-    max(confidence) -
-      min(confidence)
+    max(
+      confidence,
+      na.rm = TRUE
+    ) -
+
+      min(
+        confidence,
+        na.rm = TRUE
+      )
   )
 
   object$confidence_score <-
@@ -69,5 +122,7 @@ cell_certify <- function(
       object$confidence_score
     )
 
-  return(object)
+  return(
+    object
+  )
 }

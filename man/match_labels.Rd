@@ -2,19 +2,29 @@
 % Please edit documentation in R/match_labels.R
 \name{match_labels}
 \alias{match_labels}
-\title{Match Cell Labels to Marker Ontology}
+\title{Ontology Label Matching}
 \usage{
 match_labels(label, marker_names)
 }
 \arguments{
-\item{label}{Cell label}
+\item{label}{Character label}
 
-\item{marker_names}{Available marker names}
+\item{marker_names}{Character vector}
 }
 \value{
-Matched ontology label
+Character vector
 }
 \description{
-Automatically matches predicted
-labels to available marker sets.
+Matches predicted labels
+to marker database labels.
+}
+\examples{
+match_labels(
+  "T_cells",
+  c(
+    "T_cell",
+    "B_cell"
+  )
+)
+
 }

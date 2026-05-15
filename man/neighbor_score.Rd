@@ -15,7 +15,7 @@ neighbor_score(
 \arguments{
 \item{object}{Seurat object}
 
-\item{reduction}{Dimensional reduction method}
+\item{reduction}{Reduction method}
 
 \item{dims}{PCA dimensions}
 
@@ -27,5 +27,10 @@ neighbor_score(
 Numeric vector
 }
 \description{
-Computes local label agreement.
+Computes local neighborhood
+agreement scores.
+}
+\examples{
+NULL
+
 }

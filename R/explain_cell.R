@@ -4,112 +4,134 @@
 #' for confidence scores.
 #'
 #' @param object Seurat object
-#' @param cell_id cell barcode
+#' @param cell_id Cell barcode
+#'
+#' @return Character vector
+#'
+#' @examples
+#' NULL
 #'
 #' @export
 
 explain_cell <- function(
-    object,
-    cell_id
+  object,
+  cell_id
 ) {
-
   meta <- object@meta.data[
-    cell_id,
-    ,
+    cell_id, ,
     drop = FALSE
   ]
 
-  cat(
-    "Cell:",
+  message(
+    "Cell: ",
     cell_id,
-    "\n\n"
-  )
-
-  cat(
-    "Predicted Label:",
-    meta$predicted_label,
     "\n"
   )
 
-  cat(
-    "Confidence Score:",
+  message(
+    "Predicted Label: ",
+    meta$predicted_label
+  )
+
+  message(
+    "Confidence Score: ",
     round(
       meta$confidence_score,
       3
-    ),
-    "\n"
+    )
   )
 
-  cat(
-    "Marker Score:",
+  message(
+    "Marker Score: ",
     round(
       meta$marker_score,
       3
-    ),
-    "\n"
+    )
   )
 
-  cat(
-    "Neighbor Agreement:",
+  message(
+    "Neighbor Agreement: ",
     round(
       meta$neighbor_score,
       3
-    ),
-    "\n"
+    )
   )
 
-  cat(
-    "Entropy:",
+  message(
+    "Entropy: ",
     round(
       meta$entropy_norm,
       3
     ),
-    "\n\n"
+    "\n"
   )
 
-  cat(
-    "Interpretation:\n"
-  )
+  interpretation <- c()
 
-  if(meta$confidence_score < 0.4) {
-
-    cat(
-      "- Low confidence annotation\n"
+  if (
+    meta$confidence_score < 0.4
+  ) {
+    interpretation <- c(
+      interpretation,
+      "Low confidence annotation"
     )
-
-  } else if(
+  } else if (
     meta$confidence_score < 0.7
   ) {
-
-    cat(
-      "- Moderate confidence annotation\n"
+    interpretation <- c(
+      interpretation,
+      "Moderate confidence annotation"
     )
-
   } else {
-
-    cat(
-      "- High confidence annotation\n"
+    interpretation <- c(
+      interpretation,
+      "High confidence annotation"
     )
   }
 
-  if(meta$entropy_norm > 0.7) {
-
-    cat(
-      "- High uncertainty detected\n"
+  if (
+    meta$entropy_norm > 0.7
+  ) {
+    interpretation <- c(
+      interpretation,
+      "High uncertainty detected"
     )
   }
 
-  if(meta$neighbor_score < 0.5) {
-
-    cat(
-      "- Local neighborhood disagreement\n"
+  if (
+    meta$neighbor_score < 0.5
+  ) {
+    interpretation <- c(
+      interpretation,
+      "Local neighborhood disagreement"
     )
   }
 
-  if(meta$marker_score < 0.2) {
-
-    cat(
-      "- Weak marker support\n"
+  if (
+    meta$marker_score < 0.2
+  ) {
+    interpretation <- c(
+      interpretation,
+      "Weak marker support"
     )
   }
+
+  message(
+    "Interpretation:"
+  )
+
+  for (
+    i in seq_along(
+      interpretation
+    )
+  ) {
+    message(
+      "- ",
+      interpretation[i]
+    )
+  }
+
+  return(
+    interpretation
+  )
 }

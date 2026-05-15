@@ -8,24 +8,24 @@
 #'
 #' @return Character vector
 #'
+#' @examples
+#' NULL
+#'
 #' @export
 
 explain_confidence <- function(
-    object,
-    cell_id
+  object,
+  cell_id
 ) {
-
   meta <- object@meta.data[
-    cell_id,
-    ,
+    cell_id, ,
     drop = FALSE
   ]
 
   reasons <- c()
 
   # Marker contribution
-  if(meta$marker_score < 0.3) {
-
+  if (meta$marker_score < 0.3) {
     reasons <- c(
       reasons,
       "Weak marker enrichment"
@@ -33,8 +33,7 @@ explain_confidence <- function(
   }
 
   # Neighborhood agreement
-  if(meta$neighbor_score < 0.5) {
-
+  if (meta$neighbor_score < 0.5) {
     reasons <- c(
       reasons,
       "Neighborhood disagreement"
@@ -42,8 +41,7 @@ explain_confidence <- function(
   }
 
   # Entropy
-  if(meta$entropy_norm > 0.7) {
-
+  if (meta$entropy_norm > 0.7) {
     reasons <- c(
       reasons,
       "High annotation uncertainty"
@@ -51,11 +49,9 @@ explain_confidence <- function(
   }
 
   # Doublet score
-  if("doublet_score" %in%
-     colnames(meta)) {
-
-    if(meta$doublet_score > 0.5) {
-
+  if ("doublet_score" %in%
+    colnames(meta)) {
+    if (meta$doublet_score > 0.5) {
       reasons <- c(
         reasons,
         "Possible doublet contamination"
@@ -64,8 +60,7 @@ explain_confidence <- function(
   }
 
   # High confidence
-  if(length(reasons) == 0) {
-
+  if (length(reasons) == 0) {
     reasons <- c(
       reasons,
       "Strong annotation support"

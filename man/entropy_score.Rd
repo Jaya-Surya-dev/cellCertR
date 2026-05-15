@@ -2,14 +2,28 @@
 % Please edit documentation in R/entropy_score.R
 \name{entropy_score}
 \alias{entropy_score}
-\title{Entropy Uncertainty Score}
+\title{Entropy-Based Uncertainty Score}
 \usage{
 entropy_score(score_matrix)
 }
 \arguments{
-\item{score_matrix}{SingleR score matrix}
+\item{score_matrix}{Numeric matrix}
+}
+\value{
+Numeric vector
 }
 \description{
-Calculates uncertainty from
-SingleR score matrix.
+Calculates entropy from
+prediction score matrices.
+}
+\examples{
+mat <- matrix(
+  runif(20),
+  nrow = 5
+)
+
+entropy_score(
+  mat
+)
+
 }

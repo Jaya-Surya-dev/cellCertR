@@ -1,28 +1,34 @@
 #' Classify Confidence Levels
 #'
 #' Converts confidence scores into
-#' interpretable confidence classes.
+#' confidence classes.
 #'
-#' @param scores Numeric confidence scores
+#' @param scores Numeric vector
 #'
 #' @return Character vector
+#'
+#' @examples
+#' scores <- c(
+#'   0.2,
+#'   0.7,
+#'   0.9
+#' )
+#'
+#' classify_confidence(
+#'   scores
+#' )
 #'
 #' @export
 
 classify_confidence <- function(
-    scores
+  scores
 ) {
-
   classes <- ifelse(
     scores >= 0.8,
-
     "High",
-
     ifelse(
       scores >= 0.5,
-
       "Moderate",
-
       "Low"
     )
   )

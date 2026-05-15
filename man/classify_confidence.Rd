@@ -7,12 +7,24 @@
 classify_confidence(scores)
 }
 \arguments{
-\item{scores}{Numeric confidence scores}
+\item{scores}{Numeric vector}
 }
 \value{
 Character vector
 }
 \description{
 Converts confidence scores into
-interpretable confidence classes.
+confidence classes.
+}
+\examples{
+scores <- c(
+  0.2,
+  0.7,
+  0.9
+)
+
+classify_confidence(
+  scores
+)
+
 }

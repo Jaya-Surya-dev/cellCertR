@@ -18,3 +18,7 @@ Character vector
 Explains why a cell received
 its confidence score.
 }
+\examples{
+NULL
+
+}

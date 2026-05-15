@@ -1,12 +1,15 @@
 Package: scCertify
 Title: Explainable Confidence Scoring for Single-Cell Annotations
-Version: 0.0.0.9000
-Authors@R: 
+Version: 0.99.0
+Authors@R:
     person(
-        "Jaya Surya",
-        "Doddetipalli",
-        email = "jayasuryadoddetipalli@gmail.com",
-        role = c("aut", "cre")
+      "Jaya Surya",
+      "Doddetipalli",
+      email = "jayasuryadoddetipalli@gmail.com",
+      role = c("aut", "cre"),
+      comment = c(
+        ORCID = "0009-0002-8975-4425"
+      )
     )
 Description: 
     cellCertR provides an explainable confidence scoring framework
@@ -26,6 +29,18 @@ Suggests:
     SingleR,
     celldex,
     SingleCellExperiment,
-    ggplot2
+    ggplot2,
+    knitr,
+    rmarkdown,
+    scDblFinder,
+    testthat (>= 3.0.0)
+biocViews:
+    Software,
+    SingleCell,
+    RNASeq,
+    GeneExpression,
+    Sequencing
 URL: https://github.com/Jaya-Surya-dev/scCertify
 BugReports: https://github.com/Jaya-Surya-dev/scCertify/issues
+VignetteBuilder: knitr
+Config/testthat/edition: 3

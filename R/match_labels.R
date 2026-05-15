@@ -1,20 +1,28 @@
-#' Match Cell Labels to Marker Ontology
+#' Ontology Label Matching
 #'
-#' Automatically matches predicted
-#' labels to available marker sets.
+#' Matches predicted labels
+#' to marker database labels.
 #'
-#' @param label Cell label
-#' @param marker_names Available marker names
+#' @param label Character label
+#' @param marker_names Character vector
 #'
-#' @return Matched ontology label
+#' @return Character vector
+#'
+#' @examples
+#' match_labels(
+#'   "T_cells",
+#'   c(
+#'     "T_cell",
+#'     "B_cell"
+#'   )
+#' )
 #'
 #' @export
 
 match_labels <- function(
-    label,
-    marker_names
+  label,
+  marker_names
 ) {
-
   label_clean <- tolower(label)
 
   label_clean <- gsub(
@@ -50,8 +58,7 @@ match_labels <- function(
       label_clean
   ]
 
-  if(length(exact_match) > 0) {
-
+  if (length(exact_match) > 0) {
     return(exact_match[1])
   }
 
@@ -67,8 +74,7 @@ match_labels <- function(
       )
   ]
 
-  if(length(partial_match) > 0) {
-
+  if (length(partial_match) > 0) {
     return(partial_match[1])
   }
 
